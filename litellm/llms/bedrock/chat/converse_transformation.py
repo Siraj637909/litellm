@@ -39,6 +39,10 @@ from litellm.llms.anthropic.chat.transformation import (
     AnthropicConfig,
 )
 from litellm.llms.base_llm.chat.transformation import BaseConfig, BaseLLMException
+from litellm.llms.bedrock.request_metadata import (
+    bedrock_request_metadata_is_owned,
+    resolve_bedrock_request_metadata,
+)
 from litellm.types.llms.bedrock import *
 from litellm.types.llms.openai import (
     AllMessageValues,
@@ -1652,6 +1656,13 @@ class AmazonConverseConfig(BaseConfig):
             user_continue_message=litellm_params.pop("user_continue_message", None),
         )
 
+        request_metadata: Final = resolve_bedrock_request_metadata(
+            litellm_params=litellm_params, caller_metadata=_data.get("requestMetadata")
+        )
+        if bedrock_request_metadata_is_owned():
+            _data.pop("requestMetadata", None)
+            if request_metadata is not None:
+                _data["requestMetadata"] = request_metadata
         data: Final[RequestObject] = {"messages": bedrock_messages, **_data}
 
         return data
@@ -1705,6 +1716,13 @@ class AmazonConverseConfig(BaseConfig):
             user_continue_message=litellm_params.pop("user_continue_message", None),
         )
 
+        request_metadata: Final = resolve_bedrock_request_metadata(
+            litellm_params=litellm_params, caller_metadata=_data.get("requestMetadata")
+        )
+        if bedrock_request_metadata_is_owned():
+            _data.pop("requestMetadata", None)
+            if request_metadata is not None:
+                _data["requestMetadata"] = request_metadata
         data: Final[RequestObject] = {"messages": bedrock_messages, **_data}
 
         return data
