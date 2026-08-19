@@ -10320,6 +10320,7 @@ class Router:
             "enable_weighted_failover",
             "enable_tag_filtering",
             "tag_routing_prefix",
+            "max_fallbacks",
         ]
 
         _int_settings: Final = [
@@ -10328,6 +10329,7 @@ class Router:
             "retry_after",
             "allowed_fails",
             "cooldown_time",
+            "max_fallbacks",
         ]
 
         _existing_router_settings: Final = self.get_settings()
